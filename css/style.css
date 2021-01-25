@@ -37,7 +37,7 @@ body{
     cursor: pointer;
     border-radius: 15px;
   box-shadow: 0 9px #999;
-    transition: .5s;
+    transition: .2s;
 }
 
 .operation{
@@ -58,7 +58,8 @@ body{
     grid-area: display;
     background-color: rgb(93, 170, 93);
     cursor: default;
-    font-size: 3em;
+    font-size: 1.8em;
+    font-weight: bolder;
     display: grid;
     padding: .2em;
 }
@@ -68,6 +69,7 @@ body{
 }
 #bottom{
     text-align: end;
+    font-size: larger;
     
 
 }
@@ -78,7 +80,7 @@ body{
 }
 
 .text-display:hover{
-    overflow: scroll;
+    overflow: visible;
 }
 #ac{
     grid-area: ac;
