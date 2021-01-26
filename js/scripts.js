@@ -28,9 +28,38 @@ let calculator = {
         topDisplay.textContent = bottomDisplay.textContent + text;
         bottomDisplay.textContent = "";
     },
-    equals: () =>{
-        //checks if someting is on the top display and last char is operation
-    },
+    operate: ()=>{
+
+        //extract first number from the top display using a regex, without the operand at the end
+        let firstNum = Number(topDisplay.textContent.match(/\-?[\d]*\.{0,1}[\d]+/)[0]);
+    
+        let secondNum = Number(bottomDisplay.textContent)
+    
+        let result = 0;
+        //do a switch to see what operation we are calling
+        switch(topDisplay.textContent.match(/[\+\*\/\%\-]/)[0]){
+            case "*":
+                result = calculatorOperations.multiply(firstNum,secondNum);
+                break;
+            case "/":
+                result = calculatorOperations.divide(firstNum,secondNum);
+                break;
+            case "%":
+                result = calculatorOperations.remainder(firstNum,secondNum);
+                break;
+            case "+":
+                result = calculatorOperations.sum(firstNum,secondNum);
+                break;
+            case "-":
+                result = calculatorOperations.substract(firstNum,secondNum);
+                break;
+    
+        }
+    
+        //change the displays
+        topDisplay.textContent += bottomDisplay.textContent;
+        bottomDisplay.textContent = result;
+    }
 }
 
 
@@ -73,10 +102,24 @@ function pressButton(button){
             calculator.deleteOne();
                 break;
         case "substract":
-            if(bottomDisplay.textContent == ""){
-                calculator.updateDisplay(button.target.textContent);
-            }else if(/\-?\d*/.test(bottomDisplay.textContent)){
+            
+            //if bottom display empty, is a new number and can be negative
+            if(/\-?[\d]*\.{0,1}[\d]+[\+\*\/\%\-]\-?[\d]*\.{0,1}[\d]+/.test(topDisplay.textContent)){
                 calculator.operation(button.target.textContent);
+            }else if(bottomDisplay.textContent == ""){
+                calculator.updateDisplay(button.target.textContent);
+            }else if(/\-?[\d]*\.{0,1}[\d]+/.test(bottomDisplay.textContent)
+            && topDisplay.textContent == ""){
+                //bottom has something and top is empty, proceed as operationm and wait for next
+                //number
+                calculator.operation(button.target.textContent);
+            }else if(/\-?[\d]*\.{0,1}[\d]+/.test(bottomDisplay.textContent)
+            && topDisplay.textContent != ""){
+                //first calculate result
+                //after that we update displays
+                calculator.operate();
+                calculator.operation(button.target.textContent);
+
             }
             break;
         case "sum":
@@ -84,15 +127,29 @@ function pressButton(button){
         case "divide":
         case "remainder":
             //checks if we had already input something before, otherwise it doesnt do anything
-            if(/\-?\d*/.test(bottomDisplay.textContent)){
+            if(/\-?[\d]*\.{0,1}[\d]+[\+\*\/\%\-]\-?[\d]*\.{0,1}[\d]+/.test(topDisplay.textContent)){
                 calculator.operation(button.target.textContent);
+            }else if(/\-?[\d]*\.{0,1}[\d]+/.test(bottomDisplay.textContent)
+            && topDisplay.textContent == ""){
+                //bottom has something and top is empty, proceed as operationm and wait for next
+                //number
+                calculator.operation(button.target.textContent);
+            }else if(/\-?[\d]*\.{0,1}[\d]+/.test(bottomDisplay.textContent)
+            && topDisplay.textContent != ""){
+                //first calculate result
+                //after that we update displays
+                calculator.operate();
+                calculator.operation(button.target.textContent);
+
             }
             break;
         case "equals":
-
+            //do nothing if topDisplay doesnt have correct syntax
+            if(/\-?[\d]*\.{0,1}[\d]+[\+\*\/\%\-]/.test(topDisplay.textContent)){
+                calculator.operate();
+            }
+            break;
 
     }
 }
-
-
 

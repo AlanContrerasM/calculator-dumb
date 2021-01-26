@@ -6,7 +6,7 @@ function sum (...args) {
 	return result
 }
 
-function subtract (one, two) {
+function substract (one, two) {
 
 	return Number(one) - Number(two);
 }
@@ -57,7 +57,7 @@ function factorial(num) {
 
 export  {
 	sum,
-	subtract,
+	substract,
     remainder,
     multiply,
     divide,
