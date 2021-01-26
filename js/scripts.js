@@ -58,7 +58,8 @@ let calculator = {
     
         //change the displays
         topDisplay.textContent += bottomDisplay.textContent;
-        bottomDisplay.textContent = result;
+        //round at most 4 decimals
+        bottomDisplay.textContent = Math.round((result+Number.EPSILON)*10000)/10000;
     }
 }
 
